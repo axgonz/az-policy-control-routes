@@ -4,11 +4,11 @@ An example of how multiple definitions can be used together to implement a desir
 
 ## Setup
 
-To create tennant scoped deployments
+To create tenant scoped deployments
 
 1. Enable evelated global admin access https://learn.microsoft.com/en-us/azure/role-based-access-control/elevate-access-global-admin
 
-2. Assign permissions on the tennant root
+2. Assign permissions on the tenant root
 
 ``` bash
 az role assignment create  --scope '/' --role 'Owner' --assignee-object-id $(az ad signed-in-user show --query id)
