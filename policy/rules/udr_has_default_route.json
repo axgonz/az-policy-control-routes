@@ -1,0 +1,33 @@
+{
+  "if": {
+    "allof": [
+      {
+        "field": "type",
+        "equals": "Microsoft.Network/routeTables"
+      },
+      {
+        "anyOf": [
+          {
+            "field": "Microsoft.Network/routeTables/routes[*].hasBgpOverride",
+            "notEquals": false
+          },
+          {
+            "field": "Microsoft.Network/routeTables/routes[*].addressPrefix",
+            "notEquals": "0.0.0.0/0"
+          },
+          {
+            "field": "Microsoft.Network/routeTables/routes[*].nextHopType",
+            "notEquals": "VirtualAppliance"
+          },
+          {
+            "field": "Microsoft.Network/routeTables/routes[*].nextHopIpAddress",
+            "notEquals": "[parameters('nextHopIpAddress')]"
+          }
+        ]
+      }
+    ]
+  }, 
+  "then": {
+    "effect": "[parameters('effect')]"
+  }
+}

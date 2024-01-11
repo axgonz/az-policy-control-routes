@@ -1,0 +1,33 @@
+{
+  "if": {
+    "anyof": [
+      {
+        "allof": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/virtualNetworks"
+          },
+          {
+            "field": "Microsoft.Network/virtualNetworks/subnets[*].routeTable.id",
+            "exists": false
+          }
+        ]
+      },
+      {
+        "allof": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/virtualNetworks/subnets"
+          },
+          {
+            "field": "Microsoft.Network/virtualNetworks/subnets/routeTable.id",
+            "exists": false
+          }
+        ]
+      }
+    ]
+  },
+  "then": {
+    "effect": "[parameters('effect')]"
+  }
+}

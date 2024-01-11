@@ -1,0 +1,15 @@
+{
+  "effect": {
+    "type": "string",
+    "metadata": {
+        "description": "Selecting 'deny' will prevent non-compliant resources from being deployed.",
+        "type": "string",
+        "displayName": "Effect <audit/deny>",
+        "defaultValue": "audit",
+        "allowedValues": [
+            "audit",
+            "deny"
+        ]
+    }
+  }
+}
