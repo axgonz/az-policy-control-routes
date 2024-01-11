@@ -20,4 +20,4 @@ az role assignment create  --scope '/' --role 'Owner' --assignee-object-id $(az 
 
 ``` bash
 az deployment tenant create --name policyDefinitions --location australiaeast --template-file .\policy\main.bicep
-``
+```
