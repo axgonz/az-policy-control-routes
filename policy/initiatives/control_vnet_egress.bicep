@@ -18,7 +18,7 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
         metadata: {
             description: 'Selecting \'deny\' will prevent non-compliant resources from being deployed.'
             type: 'string'
-            displayName: 'Effect <audit/deny>'
+            displayName: 'Effect - audit/deny'
             defaultValue: 'audit'
             allowedValues: [
                 'audit'
