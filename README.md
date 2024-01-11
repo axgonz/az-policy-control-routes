@@ -1,4 +1,6 @@
-# Azure Policy Demo
+# Azure Policy Control Routes (sample)
+
+An example of how multiple definitions can be used together to implement a desired security control.
 
 ## Setup
 
