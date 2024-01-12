@@ -12,8 +12,5 @@
         "notEquals": 1
       }
     ]
-  }, 
-  "then": {
-    "effect": "[parameters('effect')]"
   }
 }

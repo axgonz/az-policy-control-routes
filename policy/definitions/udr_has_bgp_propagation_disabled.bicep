@@ -9,7 +9,14 @@ resource definition 'Microsoft.Authorization/policyDefinitions@2023-04-01' = {
     }
     policyType: 'Custom'
     mode: 'all'
-    parameters: loadJsonContent('../rules/udr_has_bgp_propagation_disabled.p.json')
-    policyRule: loadJsonContent('../rules/udr_has_bgp_propagation_disabled.json')
+    parameters: {
+      effect: loadJsonContent('../rules/_parameters.json').effect
+    }
+    policyRule: {
+      if: loadJsonContent('../rules/udr_has_bgp_propagation_enabled.json').if
+      then: {
+        effect: '[parameters(\'effect\')]'
+      }
+    }
   }
 }

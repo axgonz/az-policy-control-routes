@@ -1,0 +1,46 @@
+{
+  "effect": {
+    "type": "string",
+    "metadata": {
+        "description": "Selecting 'deny' will prevent non-compliant resources from being deployed.",
+        "type": "string",
+        "displayName": "Effect - audit/deny",
+        "defaultValue": "audit",
+        "allowedValues": [
+            "audit",
+            "deny"
+        ]
+    }
+  },
+  "nextHopIpAddress": {
+    "type": "string",
+    "metadata": {
+        "description": "The next hop IP address to be used with the default route address prefix.",
+        "displayName": "Next hop IP address"
+    }
+  },
+  "allowedLocations": {
+    "type": "array",
+    "metadata": {
+        "description": "The list of locations that can be specified when deploying resources",
+        "strongType": "location",
+        "displayName": "Allowed locations"
+    }
+  },
+  "name": {
+    "type": "string",
+    "metadata": {
+        "description": "The name of the resource.",
+        "displayName": "Name"
+    },
+    "defaultValue": "policy_enforced_udr"
+  },
+  "resourceGroupName": {
+    "type": "string",
+    "metadata": {
+        "description": "The name of the resource group.",
+        "displayName": "Resource group name"
+    },
+    "defaultValue": "policy_enforced_network_controls"
+  }
+}

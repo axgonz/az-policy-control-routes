@@ -11,43 +11,32 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
       category: 'algonz'
     }
     displayName: 'Control vnet egress'
-    description: 'Force vnet egress traffic to a desired NVA.'
+    description: 'Stop deployments of subnets without a properly configured route table.'
     parameters: {
-      effect: {
-        type: 'string'
-        metadata: {
-            description: 'Selecting \'deny\' will prevent non-compliant resources from being deployed.'
-            type: 'string'
-            displayName: 'Effect - audit/deny'
-            defaultValue: 'audit'
-            allowedValues: [
-                'audit'
-                'deny'
-            ]
-        }
-      }
-      nextHopIpAddress: {
-        type: 'string'
-        metadata: {
-          description: 'The next hop IP address to be used with the default route address prefix.'
-          displayName: 'Next hop IP address'
-        }
-      }
+      nextHopIpAddress: loadJsonContent('../rules/_parameters.json').nextHopIpAddress
+      name: loadJsonContent('../rules/_parameters.json').name
+      resourceGroupName: loadJsonContent('../rules/_parameters.json').resourceGroupName
     }
     policyDefinitions: [
       {
-        policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'subnet_has_associated_udr')
+        policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'subnet_is_associated_with_desired_udr')
         parameters: {
           effect: {
-            value: '[parameters(\'effect\')]'
+            value: 'deny'
+          }
+          name: {
+            value: '[parameters(\'name\')]'
+          }
+          resourceGroupName: {
+            value: '[parameters(\'resourceGroupName\')]'
           }
         }
-      }
+      }      
       {
         policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'udr_has_bgp_propagation_disabled')
         parameters: {
           effect: {
-            value: '[parameters(\'effect\')]'
+            value: 'deny'
           }
         }
       }
@@ -55,7 +44,7 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
         policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'udr_has_default_route')
         parameters: {
           effect: {
-            value: '[parameters(\'effect\')]'
+            value: 'deny'
           }
           nextHopIpAddress: {
             value: '[parameters(\'nextHopIpAddress\')]'
@@ -66,7 +55,7 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
         policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'udr_has_only_one_route')
         parameters: {
           effect: {
-            value: '[parameters(\'effect\')]'
+            value: 'deny'
           }
         }
       }    

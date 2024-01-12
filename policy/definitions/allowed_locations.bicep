@@ -9,7 +9,15 @@ resource definition 'Microsoft.Authorization/policyDefinitions@2023-04-01' = {
     }
     policyType: 'Custom'
     mode: 'all'
-    parameters: loadJsonContent('../rules/allowed_locations.p.json')
-    policyRule: loadJsonContent('../rules/allowed_locations.json')
+    parameters: {
+      effect: loadJsonContent('../rules/_parameters.json').effect
+      allowedLocations: loadJsonContent('../rules/_parameters.json').allowedLocations
+    }
+    policyRule: {
+      if: loadJsonContent('../rules/location_not_in_allowedLocations.json').if
+      then: {
+        effect: '[parameters(\'effect\')]'
+      }
+    }
   }
 }

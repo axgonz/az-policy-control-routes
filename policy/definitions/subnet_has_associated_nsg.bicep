@@ -9,7 +9,14 @@ resource definition 'Microsoft.Authorization/policyDefinitions@2023-04-01' = {
     }
     policyType: 'Custom'
     mode: 'all'
-    parameters: loadJsonContent('../rules/subnet_has_associated_nsg.p.json')
-    policyRule: loadJsonContent('../rules/subnet_has_associated_nsg.json')
+    parameters: {
+      effect: loadJsonContent('../rules/_parameters.json').effect
+    }
+    policyRule: {
+      if: loadJsonContent('../rules/subnet_has_no_nsg.json').if
+      then: {
+        effect: '[parameters(\'effect\')]'
+      }
+    }
   }
 }

@@ -9,7 +9,15 @@ resource definition 'Microsoft.Authorization/policyDefinitions@2023-04-01' = {
     }
     policyType: 'Custom'
     mode: 'all'
-    parameters: loadJsonContent('../rules/udr_has_default_route.p.json')
-    policyRule: loadJsonContent('../rules/udr_has_default_route.json')
+    parameters: {
+      effect: loadJsonContent('../rules/_parameters.json').effect
+      nextHopIpAddress: loadJsonContent('../rules/_parameters.json').nextHopIpAddress
+    }
+    policyRule: {
+      if: loadJsonContent('../rules/udr_is_missing_desired_default_route.json').if
+      then: {
+        effect: '[parameters(\'effect\')]'
+      }
+    }
   }
 }

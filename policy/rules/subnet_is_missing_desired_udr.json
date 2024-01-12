@@ -1,0 +1,14 @@
+{
+  "if": {
+    "allof": [
+      {
+        "field": "type",
+        "equals": "Microsoft.Network/virtualNetworks/subnets"
+      },
+      {
+        "field": "Microsoft.Network/virtualNetworks/subnets/routeTable.id",
+        "notEquals": "[concat('/resourceGroups/', parameters('resourceGroupName'), '/providers/Microsoft.Network/routeTables/', parameters('name'))]"
+      }
+    ]
+  }
+}

@@ -1,7 +1,7 @@
 targetScope = 'managementGroup'
 
 resource definition 'Microsoft.Authorization/policyDefinitions@2023-04-01' = {
-  name: 'udr_has_only_one_route'
+  name: 'udr_forces_next_hop'
   properties: {
     metadata: {
       version: '1.0.0'
@@ -9,11 +9,12 @@ resource definition 'Microsoft.Authorization/policyDefinitions@2023-04-01' = {
     }
     policyType: 'Custom'
     mode: 'all'
-    parameters:  {
+    parameters: {
       effect: loadJsonContent('../rules/_parameters.json').effect
+      nextHopIpAddress: loadJsonContent('../rules/_parameters.json').nextHopIpAddress
     }
     policyRule: {
-      if: loadJsonContent('../rules/udr_has_zero_or_more_than_one_route.json').if
+      if: loadJsonContent('../rules/udr_does_not_force_next_hop.json').if
       then: {
         effect: '[parameters(\'effect\')]'
       }
