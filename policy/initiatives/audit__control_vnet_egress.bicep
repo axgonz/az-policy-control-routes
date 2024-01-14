@@ -34,7 +34,18 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
             value: '[parameters(\'nextHopIpAddress\')]'
           }
         }
-      }   
+      }  
+      {
+        policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'udr_has_resource_lock')
+        parameters: {
+          effect: {
+            value: 'audit'
+          }
+          lock: {
+            value: 'ReadOnly'
+          }
+        }
+      }       
     ]
   }
 }
