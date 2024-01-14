@@ -12,6 +12,19 @@
         ]
     }
   },
+  "lock": {
+    "type": "string",
+    "metadata": {
+        "description": "Specify the resource lock type",
+        "type": "string",
+        "displayName": "Lock - CanNotDelete/ReadOnly",
+        "defaultValue": "CanNotDelete",
+        "allowedValues": [
+            "CanNotDelete",
+            "ReadOnly"
+        ]
+    }
+  },  
   "nextHopIpAddress": {
     "type": "string",
     "metadata": {
