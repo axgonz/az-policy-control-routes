@@ -1,37 +1,63 @@
 {
   "if": {
-    "allof": [
+    "anyof": [
       {
-        "field": "type",
-        "equals": "Microsoft.Network/routeTables"
+        "allof": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/routeTables"
+          },
+          {
+            "not": {
+              "count": {
+                "field": "Microsoft.Network/routeTables/routes[*]",
+                "where": {
+                  "allof": [
+                    {
+                      "field": "Microsoft.Network/routeTables/routes[*].addressPrefix",
+                      "equals": "0.0.0.0/0"
+                    },
+                    {
+                      "field": "Microsoft.Network/routeTables/routes[*].nextHopType",
+                      "equals": "VirtualAppliance"
+                    },
+                    {
+                      "field": "Microsoft.Network/routeTables/routes[*].nextHopIpAddress",
+                      "equals": "[parameters('nextHopIpAddress')]"
+                    }
+                  ]
+                }
+              },
+              "greater": 0
+            }
+          }
+        ]
       },
       {
-        "not": {
-          "count": {
-            "field": "Microsoft.Network/routeTables/routes[*]",
-            "where": {
+        "allof": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/routeTables/routes"
+          },
+          {
+            "not": {
               "allof": [
                 {
-                  "field": "Microsoft.Network/routeTables/routes[*].hasBgpOverride",
-                  "equals": false
-                },
-                {
-                  "field": "Microsoft.Network/routeTables/routes[*].addressPrefix",
+                  "field": "Microsoft.Network/routeTables/routes/addressPrefix",
                   "equals": "0.0.0.0/0"
                 },
                 {
-                  "field": "Microsoft.Network/routeTables/routes[*].nextHopType",
+                  "field": "Microsoft.Network/routeTables/routes/nextHopType",
                   "equals": "VirtualAppliance"
                 },
                 {
-                  "field": "Microsoft.Network/routeTables/routes[*].nextHopIpAddress",
+                  "field": "Microsoft.Network/routeTables/routes/nextHopIpAddress",
                   "equals": "[parameters('nextHopIpAddress')]"
                 }
               ]
             }
-          },
-          "greater": 0
-        }
+          }
+        ]
       }
     ]
   }
