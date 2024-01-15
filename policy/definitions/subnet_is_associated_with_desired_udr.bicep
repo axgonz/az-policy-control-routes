@@ -11,7 +11,7 @@ resource definition 'Microsoft.Authorization/policyDefinitions@2023-04-01' = {
     mode: 'all'
     parameters: {
       effect: loadJsonContent('../rules/_parameters.json').effect
-      name: loadJsonContent('../rules/_parameters.json').name
+      routeTableName: loadJsonContent('../rules/_parameters.json').routeTableName
       resourceGroupName: loadJsonContent('../rules/_parameters.json').resourceGroupName
     }
     policyRule: {

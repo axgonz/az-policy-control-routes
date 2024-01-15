@@ -1,7 +1,7 @@
 targetScope = 'managementGroup'
 
-param managementGroupName string = 'policy_definitions'
-var scope = tenantResourceId('Microsoft.Management/managementGroups', managementGroupName)
+var config = loadJsonContent('../../config.json')
+var scope = tenantResourceId('Microsoft.Management/managementGroups', config.managementGroupName)
 
 resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = {
   name: 'audit_vnet_egress_controls'

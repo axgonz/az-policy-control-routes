@@ -1,5 +1,6 @@
 targetScope = 'tenant'
 
+param location string = deployment().location
 param managementGroupName string = 'policy_definitions'
 
 resource managementGroup 'Microsoft.Management/managementGroups@2023-04-01' existing = {
@@ -34,13 +35,17 @@ module udr_has_resource_lock 'definitions/udr_has_resource_lock.bicep' = {
   name: 'udr_has_resource_lock'
   scope: managementGroup
 }
+module subscription_has_policy_controlled_udr 'deployments/subscription_has_policy_controlled_udr.bicep' = {
+  name: 'subscription_has_policy_controlled_udr'
+  scope: managementGroup
+  params: {
+    location: location
+  }
+}
 
 module audit__control_vnet_egress 'initiatives/audit__control_vnet_egress.bicep' = {
   name: 'audit__control_vnet_egress'
   scope: managementGroup
-  params: {
-    managementGroupName: managementGroupName
-  }
   dependsOn: [
     subnet_has_associated_udr
     udr_forces_next_hop
@@ -51,14 +56,12 @@ module audit__control_vnet_egress 'initiatives/audit__control_vnet_egress.bicep'
 module deny__control_vnet_egress 'initiatives/deny__control_vnet_egress.bicep' = {
   name: 'deny__control_vnet_egress'
   scope: managementGroup
-  params: {
-    managementGroupName: managementGroupName
-  }
   dependsOn: [
     subnet_is_associated_with_desired_udr
     udr_has_bgp_propagation_disabled
     udr_has_default_route
     udr_has_only_one_route
     udr_has_resource_lock
+    subscription_has_policy_controlled_udr
   ]
 }

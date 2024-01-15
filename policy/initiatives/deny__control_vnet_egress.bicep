@@ -1,7 +1,7 @@
 targetScope = 'managementGroup'
 
-param managementGroupName string = 'policy_definitions'
-var scope = tenantResourceId('Microsoft.Management/managementGroups', managementGroupName)
+var config = loadJsonContent('../../config.json')
+var scope = tenantResourceId('Microsoft.Management/managementGroups', config.managementGroupName)
 
 resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = {
   name: 'control_vnet_egress'
@@ -14,8 +14,6 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
     description: 'Stop deployments of subnets without a properly configured route table.'
     parameters: {
       nextHopIpAddress: loadJsonContent('../rules/_parameters.json').nextHopIpAddress
-      name: loadJsonContent('../rules/_parameters.json').name
-      resourceGroupName: loadJsonContent('../rules/_parameters.json').resourceGroupName
     }
     policyDefinitions: [
       {
@@ -24,11 +22,11 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
           effect: {
             value: 'deny'
           }
-          name: {
-            value: '[parameters(\'name\')]'
+          routeTableName: {
+            value: config.routeTableName
           }
           resourceGroupName: {
-            value: '[parameters(\'resourceGroupName\')]'
+            value: config.resourceGroupName
           }
         }
       }      
@@ -58,7 +56,21 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
             value: 'deny'
           }
         }
-      }   
+      }
+      {
+        policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'subscription_has_policy_controlled_udr')
+        parameters: {
+          resourceGroupName: {
+            value: config.resourceGroupName
+          }
+          routeTableName: {
+            value: config.routeTableName
+          }          
+          nextHopIpAddress: {
+            value: '[parameters(\'nextHopIpAddress\')]'
+          }
+        }
+      }          
     ]
   }
 }

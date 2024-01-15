@@ -40,20 +40,18 @@
         "displayName": "Allowed locations"
     }
   },
-  "name": {
+  "routeTableName": {
     "type": "string",
     "metadata": {
         "description": "The name of the resource.",
-        "displayName": "Name"
-    },
-    "defaultValue": "policy_enforced_udr"
+        "displayName": "Route table name"
+    }
   },
   "resourceGroupName": {
     "type": "string",
     "metadata": {
         "description": "The name of the resource group.",
         "displayName": "Resource group name"
-    },
-    "defaultValue": "policy_enforced_network_controls"
+    }
   }
 }
