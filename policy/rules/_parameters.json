@@ -47,6 +47,13 @@
         "displayName": "Route table name"
     }
   },
+  "networkSecurityGroupName": {
+    "type": "string",
+    "metadata": {
+        "description": "The name of the resource.",
+        "displayName": "Network security group name"
+    }
+  },
   "resourceGroupName": {
     "type": "string",
     "metadata": {

@@ -29,7 +29,7 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
             value: config.resourceGroupName
           }
         }
-      }      
+      }
       {
         policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'udr_has_bgp_propagation_disabled')
         parameters: {
@@ -38,7 +38,7 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
           }
         }
       }
-      { 
+      {
         policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'udr_has_default_route')
         parameters: {
           effect: {
@@ -58,19 +58,16 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
         }
       }
       {
-        policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'subscription_has_policy_controlled_udr')
+        policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'subscription_has_policy_controlled_nsg')
         parameters: {
           resourceGroupName: {
             value: config.resourceGroupName
           }
-          routeTableName: {
-            value: config.routeTableName
-          }          
-          nextHopIpAddress: {
-            value: '[parameters(\'nextHopIpAddress\')]'
+          networkSecurityGroupName: {
+            value: config.networkSecurityGroupName
           }
         }
-      }          
+      }
     ]
   }
 }

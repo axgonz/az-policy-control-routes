@@ -35,12 +35,9 @@ module udr_has_resource_lock 'definitions/udr_has_resource_lock.bicep' = {
   name: 'udr_has_resource_lock'
   scope: managementGroup
 }
-module subscription_has_policy_controlled_udr 'deployments/subscription_has_policy_controlled_udr.bicep' = {
-  name: 'subscription_has_policy_controlled_udr'
+module subscription_has_policy_controlled_nsg 'deployments/subscription_has_policy_controlled_nsg.bicep' = {
+  name: 'subscription_has_policy_controlled_nsg'
   scope: managementGroup
-  params: {
-    location: location
-  }
 }
 
 module audit__control_vnet_egress 'initiatives/audit__control_vnet_egress.bicep' = {
@@ -62,6 +59,6 @@ module deny__control_vnet_egress 'initiatives/deny__control_vnet_egress.bicep' =
     udr_has_default_route
     udr_has_only_one_route
     udr_has_resource_lock
-    subscription_has_policy_controlled_udr
+    subscription_has_policy_controlled_nsg
   ]
 }

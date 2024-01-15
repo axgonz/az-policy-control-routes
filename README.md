@@ -21,7 +21,7 @@ To create tenant scoped deployments
 There are a number of BICEP files that must be built first so that they can be read in as JSON files in policy deployments.
 
 ``` bash
-az bicep build --file .\policy\templates\udr.bicep
+az bicep build --file .\policy\templates\nsg.bicep
 ```
 
 ## Deploy
@@ -49,7 +49,7 @@ The policy definitions can be accompanied with a deployment stack (deployed at t
 
 ``` bash
 # Use deployment stacks to create a space for policy controlled resources
-az stack mg create --name 'rg_for_policy_resources' --management-group-id policy_definitions --location 'australiaeast' --template-file '.\stacks\main.bicep' --deny-settings-mode 'DenyDelete' --parameters 'subscriptionId <xxx-xx-xx-x>' --deny-settings-excluded-principals '<object-id> <object-id>'
+az stack mg create --name 'rg_for_policy_resources' --management-group-id policy_definitions --location 'australiaeast' --template-file '.\stacks\main.bicep' --deny-settings-mode 'DenyDelete' --deny-settings-apply-to-child-scopes --parameters 'subscriptionId <xxx-xx-xx-x>' --deny-settings-excluded-principals '<object-id> <object-id>'
 ```
 
 When deploying the enclave resource group be sure to *assign* the desired policy initiatives first. Take note of the objectId of any managed identities used for DeployIfNotExists policies and append them to the above deployment stack command.
