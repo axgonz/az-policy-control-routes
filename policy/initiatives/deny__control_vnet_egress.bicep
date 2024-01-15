@@ -58,18 +58,7 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
             value: 'deny'
           }
         }
-      } 
-      {
-        policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'udr_has_resource_lock')
-        parameters: {
-          effect: {
-            value: 'deny'
-          }
-          lock: {
-            value: 'ReadOnly'
-          }
-        }
-      }      
+      }   
     ]
   }
 }

@@ -30,6 +30,10 @@ module udr_has_only_one_route 'definitions/udr_has_only_one_route.bicep' = {
   name: 'udr_has_only_one_route'
   scope: managementGroup
 }
+module udr_has_resource_lock 'definitions/udr_has_resource_lock.bicep' = {
+  name: 'udr_has_resource_lock'
+  scope: managementGroup
+}
 
 module audit__control_vnet_egress 'initiatives/audit__control_vnet_egress.bicep' = {
   name: 'audit__control_vnet_egress'
@@ -40,6 +44,7 @@ module audit__control_vnet_egress 'initiatives/audit__control_vnet_egress.bicep'
   dependsOn: [
     subnet_has_associated_udr
     udr_forces_next_hop
+    udr_has_resource_lock
   ]
 }
 
@@ -54,5 +59,6 @@ module deny__control_vnet_egress 'initiatives/deny__control_vnet_egress.bicep' =
     udr_has_bgp_propagation_disabled
     udr_has_default_route
     udr_has_only_one_route
+    udr_has_resource_lock
   ]
 }
