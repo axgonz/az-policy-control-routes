@@ -56,14 +56,14 @@ When deploying the enclave resource group be sure to *assign* the desired policy
 
 ## How it works...
 
-We create a DeployIfNotExists policy that will in turn create an NSG when a resource group called **'policy_enforced_resource_group'** is created. The specific policy is called **'subscription_has_policy_controlled_nsg'** and is deployed as part of the **'deny__control_vnet_egress'** initiative.
+We create a DeployIfNotExists policy that will in turn create a network security group when a resource group called **'policy_enforced_resource_group'** is created. The specific policy is called **'subscription_has_policy_controlled_nsg'** and is deployed as part of the **'deny__control_vnet_egress'** initiative.
 
 Next we assign this initiative (this is done manually using the portal; this sample repo does not create any policy assignments). As the assignment is created we take note of the MSI objectId that is created for us, it is found under the Remediation section of the initiative assignment.
 
-Finally we use a deployment stack to create the before mentioned resource group ('subscription_has_policy_controlled_nsg') and allow the MSI linked to the before mentioned policy assignment to bypass the DenyWriteAndDelete settings of the deployment stack.
+Finally we use a deployment stack to create the before mentioned resource group ('subscription_has_policy_controlled_nsg') and allow the MSI linked to the policy assignment to bypass the DenyWriteAndDelete settings of the deployment stack. This is done through the `--deny-settings-excluded-principals` option when creating the deployment stack.
 
-The deployment stack then is also used to create a route table. When the deployment is complete there will be a new resource group with a route table that cannot be modified (even as Owner of the subscription). The only way to modify these is to update the deployment stack (which has been deployed at the management group level).
+The deployment stack is also used to create a route table in the 'policy_enforced_resource_group' resource group. When the deployment is completed this route table along with the resource group cannot be modified or deleted (even as Owner of the subscription). The only way to modify or delete these is to update the deployment stack (which has been deployed at the management group level).
 
-The creation of the resource group initiates a separate remediation task of the DeployIfNotExists policy. This will eventually create an network security group in the same resource group as the route table. As the network security group is not controlled as part of the deployment stack however, it is possible to modify and delete it without needed to update the deployment stack.
+The creation of the resource group triggers a remediation task of the DeployIfNotExists policy. This initiates a separate deployment eventually creating an network security group in the same resource group as the route table. However, as the network security group is not controlled as part of the deployment stack, it is possible to modify and delete it without needing to update the deployment stack itself.
 
 
