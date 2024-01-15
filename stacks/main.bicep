@@ -5,11 +5,13 @@ param location string = deployment().location
 
 var config = loadJsonContent('../config.json')
 
-module exampleModule 'modules/subscription.bicep' = {
+module rg 'modules/rg.bicep' = {
   name: 'deploy_${config.resourceGroupName}'
   scope: subscription(subscriptionId)
   params: {
-    name: config.resourceGroupName
+    name: config.routeTableName
     location: location
+    nextHopIpAddress: config.nextHopIpAddress
+    resourceGroupName: config.resourceGroupName
   }
 }

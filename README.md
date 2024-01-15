@@ -49,7 +49,21 @@ The policy definitions can be accompanied with a deployment stack (deployed at t
 
 ``` bash
 # Use deployment stacks to create a space for policy controlled resources
-az stack mg create --name 'rg_for_policy_resources' --management-group-id policy_definitions --location 'australiaeast' --template-file '.\stacks\main.bicep' --deny-settings-mode 'DenyDelete' --deny-settings-apply-to-child-scopes --parameters 'subscriptionId <xxx-xx-xx-x>' --deny-settings-excluded-principals '<object-id> <object-id>'
+az stack mg create --name 'rg_for_policy_resources' --management-group-id policy_definitions --location 'australiaeast' --template-file '.\stacks\main.bicep' --deny-settings-mode 'DenyWriteAndDelete' --deny-settings-apply-to-child-scopes --parameters 'subscriptionId <xxx-xx-xx-x>' --deny-settings-excluded-principals '<object-id> <object-id>'
 ```
 
 When deploying the enclave resource group be sure to *assign* the desired policy initiatives first. Take note of the objectId of any managed identities used for DeployIfNotExists policies and append them to the above deployment stack command.
+
+## How it works...
+
+We create a DeployIfNotExists policy that will in turn create an NSG when a resource group called **'policy_enforced_resource_group'** is created. The specific policy is called **'subscription_has_policy_controlled_nsg'** and is deployed as part of the **'deny__control_vnet_egress'** initiative.
+
+Next we assign this initiative (this is done manually using the portal; this sample repo does not create any policy assignments). As the assignment is created we take note of the MSI objectId that is created for us, it is found under the Remediation section of the initiative assignment.
+
+Finally we use a deployment stack to create the before mentioned resource group ('subscription_has_policy_controlled_nsg') and allow the MSI linked to the before mentioned policy assignment to bypass the DenyWriteAndDelete settings of the deployment stack.
+
+The deployment stack then is also used to create a route table. When the deployment is complete there will be a new resource group with a route table that cannot be modified (even as Owner of the subscription). The only way to modify these is to update the deployment stack (which has been deployed at the management group level).
+
+The creation of the resource group initiates a separate remediation task of the DeployIfNotExists policy. This will eventually create an network security group in the same resource group as the route table. As the network security group is not controlled as part of the deployment stack however, it is possible to modify and delete it without needed to update the deployment stack.
+
+

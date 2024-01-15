@@ -2,5 +2,6 @@
   "managementGroupName": "policy_definitions",
   "resourceGroupName": "policy_enforced_resource_group",
   "routeTableName": "policy_enforced_udr",
+  "nextHopIpAddress": "10.0.0.4",
   "networkSecurityGroupName": "policy_enforced_nsg"
 }
