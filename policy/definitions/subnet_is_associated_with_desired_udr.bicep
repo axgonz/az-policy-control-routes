@@ -13,6 +13,7 @@ resource definition 'Microsoft.Authorization/policyDefinitions@2023-04-01' = {
       effect: loadJsonContent('../rules/_parameters.json').effect
       routeTableName: loadJsonContent('../rules/_parameters.json').routeTableName
       resourceGroupName: loadJsonContent('../rules/_parameters.json').resourceGroupName
+      excludedSubnets: loadJsonContent('../rules/_parameters.json').excludedSubnets
     }
     policyRule: {
       if: loadJsonContent('../rules/subnet_is_missing_desired_udr.json').if

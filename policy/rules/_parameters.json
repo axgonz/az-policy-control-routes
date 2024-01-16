@@ -24,7 +24,7 @@
             "ReadOnly"
         ]
     }
-  },  
+  },
   "nextHopIpAddress": {
     "type": "string",
     "metadata": {
@@ -32,12 +32,20 @@
         "displayName": "Next hop IP address"
     }
   },
+  "excludedSubnets": {
+    "type": "array",
+    "metadata": {
+        "description": "An array of subnet resource Ids to exclude from this policy.",
+        "displayName": "Excluded subnets",
+        "strongType": "Microsoft.Network/virtualNetworks/subnets"
+    }
+  },
   "allowedLocations": {
     "type": "array",
     "metadata": {
         "description": "The list of locations that can be specified when deploying resources",
-        "strongType": "location",
-        "displayName": "Allowed locations"
+        "displayName": "Allowed locations",
+        "strongType": "location"
     }
   },
   "routeTableName": {

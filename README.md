@@ -30,17 +30,10 @@ Deploy the policy definitions and initiatives.
 
 ``` bash
 # Deploy everything
-az deployment tenant create \
-    --name policyDefinitions \
-    --location australiaeast \
-    --template-file .\policy\main.bicep
+az deployment tenant create --name policyDefinitions --location australiaeast --template-file .\policy\main.bicep
 
 # Or deploy just a single definition
- az deployment mg create \
-    --name policyDefinitions \
-    --location australiaeast \
-    --management-group-id policy_definitions \
-    --template-file .\policy\definitions\udr_forces_next_hop.bicep
+az deployment mg create --name policyDefinitions --location australiaeast --management-group-id policy_definitions --template-file .\policy\definitions\udr_forces_next_hop.bicep
 ```
 
 ## Lock
@@ -49,7 +42,7 @@ The policy definitions can be accompanied with a deployment stack (deployed at t
 
 ``` bash
 # Use deployment stacks to create a space for policy controlled resources
-az stack mg create --name 'rg_for_policy_resources' --management-group-id policy_definitions --location 'australiaeast' --template-file '.\stacks\main.bicep' --deny-settings-mode 'DenyWriteAndDelete' --deny-settings-apply-to-child-scopes --parameters 'subscriptionId <xxx-xx-xx-x>' --deny-settings-excluded-principals '<object-id> <object-id>'
+az stack mg create --name 'rg_for_policy_resources' --management-group-id policy_definitions --location 'australiaeast' --template-file '.\stacks\main.bicep' --deny-settings-mode 'DenyDelete' --deny-settings-apply-to-child-scopes --parameters 'subscriptionId <xxx-xx-xx-x>' --deny-settings-excluded-principals '<object-id> <object-id>'
 ```
 
 When deploying the enclave resource group be sure to *assign* the desired policy initiatives first. Take note of the objectId of any managed identities used for DeployIfNotExists policies and append them to the above deployment stack command.
@@ -60,7 +53,7 @@ We create a DeployIfNotExists policy that will in turn create a network security
 
 Next we assign this initiative (this is done manually using the portal; this sample repo does not create any policy assignments). As the assignment is created we take note of the MSI objectId that is created for us, it is found under the Remediation section of the initiative assignment.
 
-Finally we use a deployment stack to create the before mentioned resource group ('subscription_has_policy_controlled_nsg') and allow the MSI linked to the policy assignment to bypass the DenyWriteAndDelete settings of the deployment stack. This is done through the `--deny-settings-excluded-principals` option when creating the deployment stack.
+Finally we use a deployment stack to create the before mentioned resource group ('subscription_has_policy_controlled_nsg') and allow the MSI linked to the policy assignment to bypass the DenyDelete settings of the deployment stack. This is done through the `--deny-settings-excluded-principals` option when creating the deployment stack.
 
 The deployment stack is also used to create a route table in the 'policy_enforced_resource_group' resource group. When the deployment is completed this route table along with the resource group cannot be modified or deleted (even as Owner of the subscription). The only way to modify or delete these is to update the deployment stack (which has been deployed at the management group level).
 
