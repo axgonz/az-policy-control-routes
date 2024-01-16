@@ -58,3 +58,6 @@ Finally we use a deployment stack to create the before mentioned resource group 
 The deployment stack is also used to create a route table in the 'policy_enforced_resource_group' resource group. When the deployment is completed this route table along with the resource group cannot be modified or deleted (even as Owner of the subscription). The only way to modify or delete these is to update the deployment stack (which has been deployed at the management group level).
 
 The creation of the resource group triggers a remediation task of the DeployIfNotExists policy. This initiates a separate deployment eventually creating an network security group in the same resource group as the route table. However, as the network security group is not controlled as part of the deployment stack, it is possible to modify and delete it without needing to update the deployment stack itself.
+
+
+
