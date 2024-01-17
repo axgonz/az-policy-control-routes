@@ -11,5 +11,8 @@
     "targetSubscriptions": [
       "189ab2d2-5fbf-4349-90d5-65601910af71"
     ]
+  },
+  "policy": {
+    "deployAssignments": false
   }
 }

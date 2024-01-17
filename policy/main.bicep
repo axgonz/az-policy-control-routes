@@ -1,12 +1,14 @@
 targetScope = 'tenant'
 
-param location string = deployment().location
-param managementGroupName string = 'policy_definitions'
+var config = loadJsonContent('../config.json')
+var managementGroupName = config.managementGroupName
+var assign = config.policy.deployAssignments
 
 resource managementGroup 'Microsoft.Management/managementGroups@2023-04-01' existing = {
   name: managementGroupName
 }
 
+// Deploy definitions
 module subnet_has_associated_udr 'definitions/subnet_has_associated_udr.bicep' = {
   name: 'subnet_has_associated_udr'
   scope: managementGroup
@@ -40,8 +42,9 @@ module subscription_has_policy_controlled_nsg 'deployments/subscription_has_poli
   scope: managementGroup
 }
 
-module audit__control_vnet_egress 'initiatives/audit__control_vnet_egress.bicep' = {
-  name: 'audit__control_vnet_egress'
+// Deploy initiatives
+module audit_vnet_egress_controls 'initiatives/audit_vnet_egress_controls.bicep' = {
+  name: 'audit_vnet_egress_controls'
   scope: managementGroup
   dependsOn: [
     subnet_has_associated_udr
@@ -49,16 +52,30 @@ module audit__control_vnet_egress 'initiatives/audit__control_vnet_egress.bicep'
     udr_has_resource_lock
   ]
 }
-
-module deny__control_vnet_egress 'initiatives/deny__control_vnet_egress.bicep' = {
-  name: 'deny__control_vnet_egress'
+module control_vnet_egress 'initiatives/control_vnet_egress.bicep' = {
+  name: 'control_vnet_egress'
   scope: managementGroup
   dependsOn: [
     subnet_is_associated_with_desired_udr
     udr_has_bgp_propagation_disabled
     udr_has_default_route
     udr_has_only_one_route
-    udr_has_resource_lock
-    subscription_has_policy_controlled_nsg
   ]
 }
+
+// Deploy assignments
+module audit_vnet_egress_controls_assignment 'assignments/audit_vnet_egress_controls.bicep' = if (assign) {
+  name: 'audit_vnet_egress_controls_assignment'
+  scope: managementGroup
+  dependsOn: [
+    audit_vnet_egress_controls
+  ]
+}
+module control_vnet_egress_assignment 'assignments/control_vnet_egress.bicep' = if (assign) {
+  name: 'control_vnet_egress_assignment'
+  scope: managementGroup
+  dependsOn: [
+    control_vnet_egress
+  ]
+}
+
