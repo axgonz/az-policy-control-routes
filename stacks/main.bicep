@@ -1,11 +1,10 @@
 targetScope = 'managementGroup'
 
-param subscriptionId string
 param location string = deployment().location
 
 var config = loadJsonContent('../config.json')
 
-module rg 'modules/rg.bicep' = {
+module rg 'modules/rg.bicep' = [for subscriptionId in config.stacks.targetSubscriptions: {
   name: 'deploy_${config.resourceGroupName}'
   scope: subscription(subscriptionId)
   params: {
@@ -14,4 +13,4 @@ module rg 'modules/rg.bicep' = {
     nextHopIpAddress: config.nextHopIpAddress
     resourceGroupName: config.resourceGroupName
   }
-}
+}]
