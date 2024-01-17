@@ -14,6 +14,7 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
     description: 'Stop deployments of subnets without a properly configured route table.'
     parameters: {
       nextHopIpAddress: loadJsonContent('../rules/_parameters.json').nextHopIpAddress
+      excludedSubnets: loadJsonContent('../rules/_parameters.json').excludedSubnets
     }
     policyDefinitions: [
       {
@@ -27,6 +28,9 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
           }
           resourceGroupName: {
             value: config.resourceGroupName
+          }
+          excludedSubnets: {
+            value: '[parameters(\'excludedSubnets\')]'
           }
         }
       }
@@ -54,17 +58,6 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
         parameters: {
           effect: {
             value: 'deny'
-          }
-        }
-      }
-      {
-        policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'subscription_has_policy_controlled_nsg')
-        parameters: {
-          resourceGroupName: {
-            value: config.resourceGroupName
-          }
-          networkSecurityGroupName: {
-            value: config.networkSecurityGroupName
           }
         }
       }
