@@ -7,8 +7,8 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
   name: 'audit_vnet_egress_controls'
   properties: {
     metadata: {
-      version: '1.0.0'
-      category: 'algonz'
+      version: config.metadata.version
+      category: config.metadata.category
     }
     displayName: 'Control vnet egress (audit only)'
     description: 'Audit if vnet egress traffic is controlled with a route table.'

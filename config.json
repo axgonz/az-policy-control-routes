@@ -1,4 +1,8 @@
 {
+  "metadata": {
+    "version": "1.0.0",
+    "category": "algonz"
+  },
   "managementGroupName": "policy_definitions",
   "resourceGroupName": "policy_enforced_resource_group",
   "networkSecurityGroupName": "policy_enforced_nsg",

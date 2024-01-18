@@ -6,6 +6,10 @@ var scope = tenantResourceId('Microsoft.Management/managementGroups', config.man
 resource assignment 'Microsoft.Authorization/policyAssignments@2023-04-01' = {
   name: 'control_vnet_egress'
   properties: {
+    metadata: {
+      version: config.metadata.version
+      category: config.metadata.category
+    }
     displayName: 'Control vnet egress'
     parameters: {
       nextHopIpAddress: {

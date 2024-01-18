@@ -1,11 +1,13 @@
 targetScope = 'managementGroup'
 
+var config = loadJsonContent('../../config.json')
+
 resource definition 'Microsoft.Authorization/policyDefinitions@2023-04-01' = {
   name: 'subnet_has_associated_udr'
   properties: {
     metadata: {
-      version: '1.0.0'
-      category: 'algonz'
+      version: config.metadata.version
+      category: config.metadata.category
     }
     policyType: 'Custom'
     mode: 'all'
