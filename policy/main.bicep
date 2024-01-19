@@ -8,6 +8,11 @@ resource managementGroup 'Microsoft.Management/managementGroups@2023-04-01' exis
   name: managementGroupName
 }
 
+module vnet_in_allowed_locations 'definitions/vnet_in_allowed_locations.bicep' = {
+  name: 'vnet_in_allowed_locations'
+  scope: managementGroup
+}
+
 // Deploy definitions (udr)
 module subnet_has_associated_udr 'definitions/subnet_has_associated_udr.bicep' = {
   name: 'subnet_has_associated_udr'
@@ -49,6 +54,7 @@ module audit_vnet_egress_controls 'initiatives/audit_vnet_egress_controls.bicep'
   name: 'audit_vnet_egress_controls'
   scope: managementGroup
   dependsOn: [
+    vnet_in_allowed_locations
     subnet_has_associated_udr
     udr_forces_next_hop
   ]
@@ -65,6 +71,7 @@ module control_vnet_egress 'initiatives/control_vnet_egress.bicep' = {
   name: 'control_vnet_egress'
   scope: managementGroup
   dependsOn: [
+    vnet_in_allowed_locations
     subnet_is_associated_with_desired_udr
     udr_has_bgp_propagation_disabled
     udr_has_default_route
@@ -79,14 +86,17 @@ module control_vnet_ingress 'initiatives/control_vnet_ingress.bicep' = {
   ]
 }
 
-// Deploy assignments
-module audit_vnet_egress_controls_assignment 'assignments/audit_vnet_egress_controls.bicep' = if (assign) {
-  name: 'audit_vnet_egress_controls_assignment'
+// Deploy assignments (udr)
+module audit_vnet_egress_controls_assignment 'assignments/audit_vnet_egress_controls.bicep' = [for allowedLocation in config.vnet.allowedLocations: if (assign) {
+  name: 'audit_vnet_egress_controls_assignment_${allowedLocation}'
   scope: managementGroup
+  params: {
+    location: allowedLocation
+  }
   dependsOn: [
     audit_vnet_egress_controls
   ]
-}
+}]
 module audit_vnet_ingress_controls_assignment 'assignments/audit_vnet_ingress_controls.bicep' = if (assign) {
   name: 'audit_vnet_ingress_controls_assignment'
   scope: managementGroup
@@ -94,13 +104,16 @@ module audit_vnet_ingress_controls_assignment 'assignments/audit_vnet_ingress_co
     audit_vnet_ingress_controls
   ]
 }
-module control_vnet_egress_assignment 'assignments/control_vnet_egress.bicep' = if (assign) {
-  name: 'control_vnet_egress_assignment'
+module control_vnet_egress_assignment 'assignments/control_vnet_egress.bicep' = [for allowedLocation in config.vnet.allowedLocations: if (assign) {
+  name: 'control_vnet_egress_assignment_${allowedLocation}'
   scope: managementGroup
+  params: {
+    location: allowedLocation
+  }
   dependsOn: [
     control_vnet_egress
   ]
-}
+}]
 module control_vnet_ingress_assignment 'assignments/control_vnet_ingress.bicep' = if (assign) {
   name: 'control_vnet_ingress_assignment'
   scope: managementGroup

@@ -18,6 +18,9 @@ resource assignment 'Microsoft.Authorization/policyAssignments@2023-04-01' = {
       location: {
         value: location
       }
+      allowedLocations: {
+        value: config.vnet.allowedLocations
+      }
       nextHopIpAddress: {
         value: config.nextHopIpAddressLookup[location]
       }

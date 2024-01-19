@@ -13,6 +13,13 @@
   },
   "managementGroupName": "policy_definitions",
   "resourceGroupName": "policy_enforced_resource_group",
+  "vnet": {
+    "allowedLocations": [
+      "australiacentral",
+      "australiaeast",
+      "australiasoutheast"
+    ]
+  },
   "routeTable": {
     "name": "policy_enforced_udr",
     "excludedSubnets": [
