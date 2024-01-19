@@ -21,8 +21,17 @@ resource assignment 'Microsoft.Authorization/policyAssignments@2023-04-01' = {
       allowedLocations: {
         value: config.vnet.allowedLocations
       }
+      resourceGroupName: {
+        value: '${config.resourceGroupName}_${shortLocation}'
+      }
+      routeTableName: {
+        value: '${config.routeTable.name}_${shortLocation}'
+      }
       nextHopIpAddress: {
         value: config.nextHopIpAddressLookup[location]
+      }
+      excludedSubnets: {
+        value: config.routeTable.excludedSubnets
       }
     }
     policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policySetDefinitions', 'audit_vnet_egress_controls')

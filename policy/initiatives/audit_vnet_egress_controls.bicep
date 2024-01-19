@@ -15,7 +15,10 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
     parameters: {
       location: loadJsonContent('../rules/_parameters.json').location
       allowedLocations: loadJsonContent('../rules/_parameters.json').allowedLocations
+      resourceGroupName: loadJsonContent('../rules/_parameters.json').resourceGroupName
+      routeTableName: loadJsonContent('../rules/_parameters.json').routeTableName
       nextHopIpAddress: loadJsonContent('../rules/_parameters.json').nextHopIpAddress
+      excludedSubnets: loadJsonContent('../rules/_parameters.json').excludedSubnets
     }
     policyDefinitions: [
       {
@@ -30,10 +33,22 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
         }
       }
       {
-        policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'subnet_has_associated_udr')
+        policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'subnet_is_associated_with_desired_udr')
         parameters: {
           effect: {
             value: 'audit'
+          }
+          location: {
+            value: '[parameters(\'location\')]'
+          }
+          resourceGroupName: {
+            value: '[parameters(\'resourceGroupName\')]'
+          }
+          routeTableName: {
+            value: '[parameters(\'routeTableName\')]'
+          }
+          excludedSubnets: {
+            value: '[parameters(\'excludedSubnets\')]'
           }
         }
       }

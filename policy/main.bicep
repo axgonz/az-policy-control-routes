@@ -14,10 +14,6 @@ module vnet_in_allowed_locations 'definitions/vnet_in_allowed_locations.bicep' =
 }
 
 // Deploy definitions (udr)
-module subnet_has_associated_udr 'definitions/subnet_has_associated_udr.bicep' = {
-  name: 'subnet_has_associated_udr'
-  scope: managementGroup
-}
 module subnet_is_associated_with_desired_udr 'definitions/subnet_is_associated_with_desired_udr.bicep' = {
   name: 'subnet_is_associated_with_desired_udr'
   scope: managementGroup
@@ -40,10 +36,6 @@ module subnet_has_associated_nsg 'definitions/subnet_has_associated_nsg.bicep' =
   name: 'subnet_has_associated_nsg'
   scope: managementGroup
 }
-module nsg_not_allows_public_inbound 'definitions/nsg_not_allows_public_inbound.bicep' = {
-  name: 'nsg_not_allows_public_inbound'
-  scope: managementGroup
-}
 module nsgrule_not_allows_public_inbound 'definitions/nsgrule_not_allows_public_inbound.bicep' = {
   name: 'nsgrule_not_allows_public_inbound'
   scope: managementGroup
@@ -55,7 +47,7 @@ module audit_vnet_egress_controls 'initiatives/audit_vnet_egress_controls.bicep'
   scope: managementGroup
   dependsOn: [
     vnet_in_allowed_locations
-    subnet_has_associated_udr
+    subnet_is_associated_with_desired_udr
     udr_forces_next_hop
   ]
 }
@@ -64,7 +56,7 @@ module audit_vnet_ingress_controls 'initiatives/audit_vnet_ingress_controls.bice
   scope: managementGroup
   dependsOn: [
     subnet_has_associated_nsg
-    nsg_not_allows_public_inbound
+    nsgrule_not_allows_public_inbound
   ]
 }
 module control_vnet_egress 'initiatives/control_vnet_egress.bicep' = {
@@ -86,7 +78,7 @@ module control_vnet_ingress 'initiatives/control_vnet_ingress.bicep' = {
   ]
 }
 
-// Deploy assignments (udr)
+// Deploy assignments
 module audit_vnet_egress_controls_assignment 'assignments/audit_vnet_egress_controls.bicep' = [for allowedLocation in config.vnet.allowedLocations: if (assign) {
   name: 'audit_vnet_egress_controls_assignment_${allowedLocation}'
   scope: managementGroup
