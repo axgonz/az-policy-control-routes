@@ -13,16 +13,16 @@ resource assignment 'Microsoft.Authorization/policyAssignments@2023-04-01' = {
       version: config.metadata.version
       category: config.metadata.category
     }
-    displayName: 'Control vnet egress ${shortLocation}'
+    displayName: 'Control vnet egress \'${shortLocation}\''
     parameters: {
       location: {
         value: location
       }
       resourceGroupName: {
-        value: config.resourceGroupName
+        value: '${config.resourceGroupName}_${shortLocation}'
       }
       routeTableName: {
-        value: config.routeTable.name
+        value: '${config.routeTable.name}_${shortLocation}'
       }
       nextHopIpAddress: {
         value: config.nextHopIpAddressLookup[location]

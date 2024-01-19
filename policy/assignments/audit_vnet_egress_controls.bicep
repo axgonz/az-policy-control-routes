@@ -13,7 +13,7 @@ resource assignment 'Microsoft.Authorization/policyAssignments@2023-04-01' = {
       version: config.metadata.version
       category: config.metadata.category
     }
-    displayName: 'Control vnet egress - ${shortLocation} (audit only)'
+    displayName: 'Control vnet egress \'${shortLocation}\' (audit only)'
     parameters: {
       location: {
         value: location

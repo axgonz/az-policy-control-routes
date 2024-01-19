@@ -16,7 +16,7 @@
     "type": "string",
     "metadata": {
         "description": "The locations specific to this assignment",
-        "displayName": "Locations",
+        "displayName": "Location",
         "strongType": "location"
     }
   },
