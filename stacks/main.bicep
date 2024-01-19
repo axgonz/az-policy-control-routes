@@ -8,9 +8,9 @@ module rg 'modules/rg.bicep' = [for subscriptionId in config.stacks.targetSubscr
   name: 'deploy_${config.resourceGroupName}'
   scope: subscription(subscriptionId)
   params: {
-    name: config.routeTableName
     location: location
-    nextHopIpAddress: config.nextHopIpAddress
     resourceGroupName: config.resourceGroupName
+    routeTableName: config.routeTableName
+    nextHopIpAddress: config.nextHopIpAddress
   }
 }]
