@@ -65,7 +65,7 @@ If you wish to remove the policies.
 
 ``` powershell
 # Delete assignments
-az policy assignment list --management-group policy_definitions --query "[?metadata.category=='algonz'].name" --output tsv | foreach { az policy assignment delete --management-group policy_definitions --name $_ }
+az policy assignment list --scope '/providers/Microsoft.Management/managementGroups/policy_definitions' --query "[?metadata.category=='algonz'].name" --output tsv | foreach { az policy assignment delete --scope '/providers/Microsoft.Management/managementGroups/policy_definitions' --name $_ }
 
 # Delete initiatives
 az policy set-definition list --management-group policy_definitions --query "[?metadata.category=='algonz'].name" --output tsv | foreach { az policy set-definition delete --management-group policy_definitions --name $_ }
