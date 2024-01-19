@@ -59,5 +59,17 @@ The deployment stack is also used to create a route table in the 'policy_enforce
 
 The creation of the resource group triggers a remediation task of the DeployIfNotExists policy. This initiates a separate deployment eventually creating an network security group in the same resource group as the route table. However, as the network security group is not controlled as part of the deployment stack, it is possible to modify and delete it without needing to update the deployment stack itself.
 
+## Cleanup
 
+If you wish to remove the policies.
 
+``` powershell
+# Delete assignments
+az policy assignment list --management-group policy_definitions --query "[?metadata.category=='algonz'].name" --output tsv | foreach { az policy assignment delete --management-group policy_definitions --name $_ }
+
+# Delete initiatives
+az policy set-definition list --management-group policy_definitions --query "[?metadata.category=='algonz'].name" --output tsv | foreach { az policy set-definition delete --management-group policy_definitions --name $_ }
+
+# Delete definitions
+az policy definition list --management-group policy_definitions --query "[?metadata.category=='algonz'].name" --output tsv | foreach { az policy definition delete --management-group policy_definitions --name $_ }
+```

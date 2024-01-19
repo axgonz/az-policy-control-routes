@@ -29,14 +29,6 @@ module udr_has_default_route 'definitions/udr_has_default_route.bicep' = {
   name: 'udr_has_default_route'
   scope: managementGroup
 }
-// module udr_has_only_one_route 'definitions/udr_has_only_one_route.bicep' = {
-//   name: 'udr_has_only_one_route'
-//   scope: managementGroup
-// }
-// module udr_has_resource_lock 'definitions/udr_has_resource_lock.bicep' = {
-//   name: 'udr_has_resource_lock'
-//   scope: managementGroup
-// }
 
 // Deploy definitions (nsg)
 module subnet_has_associated_nsg 'definitions/subnet_has_associated_nsg.bicep' = {
@@ -51,31 +43,6 @@ module nsgrule_not_allows_public_inbound 'definitions/nsgrule_not_allows_public_
   name: 'nsgrule_not_allows_public_inbound'
   scope: managementGroup
 }
-
-// module nsg_not_allows_any_inbound 'definitions/nsg_not_allows_any_inbound.bicep' = {
-//   name: 'nsg_not_allows_any_inbound'
-//   scope: managementGroup
-// }
-// module nsg_not_allows_internet_inbound 'definitions/nsg_not_allows_internet_inbound.bicep' = {
-//   name: 'nsg_not_allows_internet_inbound'
-//   scope: managementGroup
-// }
-// module nsg_not_allows_non_rfc1918_a_inbound 'definitions/nsg_not_allows_non_rfc1918_a_inbound.bicep' = {
-//   name: 'nsg_not_allows_non_rfc1918_a_inbound'
-//   scope: managementGroup
-// }
-// module nsg_not_allows_non_rfc1918_b_inbound 'definitions/nsg_not_allows_non_rfc1918_b_inbound.bicep' = {
-//   name: 'nsg_not_allows_non_rfc1918_b_inbound'
-//   scope: managementGroup
-// }
-// module nsg_not_allows_non_rfc1918_c_inbound 'definitions/nsg_not_allows_non_rfc1918_c_inbound.bicep' = {
-//   name: 'nsg_not_allows_non_rfc1918_c_inbound'
-//   scope: managementGroup
-// }
-// module subscription_has_policy_controlled_nsg 'deployments/subscription_has_policy_controlled_nsg.bicep' = {
-//   name: 'subscription_has_policy_controlled_nsg'
-//   scope: managementGroup
-// }
 
 // Deploy initiatives
 module audit_vnet_egress_controls 'initiatives/audit_vnet_egress_controls.bicep' = {
