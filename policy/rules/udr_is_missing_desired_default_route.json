@@ -8,6 +8,10 @@
             "equals": "Microsoft.Network/routeTables"
           },
           {
+            "field": "location",
+            "equals": "[parameters('location')]"
+          },
+          {
             "not": {
               "count": {
                 "field": "Microsoft.Network/routeTables/routes[*]",
@@ -38,6 +42,10 @@
           {
             "field": "type",
             "equals": "Microsoft.Network/routeTables/routes"
+          },
+          {
+            "field": "location",
+            "equals": "[parameters('location')]"
           },
           {
             "not": {

@@ -13,6 +13,7 @@ resource definition 'Microsoft.Authorization/policyDefinitions@2023-04-01' = {
     mode: 'all'
     parameters: {
       effect: loadJsonContent('../rules/_parameters.json').effect
+      location: loadJsonContent('../rules/_parameters.json').location
       nextHopIpAddress: loadJsonContent('../rules/_parameters.json').nextHopIpAddress
     }
     policyRule: {

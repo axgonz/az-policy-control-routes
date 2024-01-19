@@ -6,6 +6,10 @@
         "equals": "Microsoft.Network/routeTables"
       },
       {
+        "field": "location",
+        "equals": "[parameters('location')]"
+      },
+      {
         "anyof": [
           {
             "field": "Microsoft.Network/routeTables/disableBgpRoutePropagation",

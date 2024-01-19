@@ -13,6 +13,7 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
     displayName: 'Control vnet egress (audit only)'
     description: 'Audit if vnet egress traffic is controlled with a route table.'
     parameters: {
+      location: loadJsonContent('../rules/_parameters.json').location
       nextHopIpAddress: loadJsonContent('../rules/_parameters.json').nextHopIpAddress
     }
     policyDefinitions: [
@@ -29,6 +30,9 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
         parameters: {
           effect: {
             value: 'audit'
+          }
+          location: {
+            value: '[parameters(\'location\')]'
           }
           nextHopIpAddress: {
             value: '[parameters(\'nextHopIpAddress\')]'

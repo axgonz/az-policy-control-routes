@@ -13,6 +13,7 @@ resource definition 'Microsoft.Authorization/policyDefinitions@2023-04-01' = {
     mode: 'all'
     parameters: {
       effect: loadJsonContent('../rules/_parameters.json').effect
+      location: loadJsonContent('../rules/_parameters.json').location
       routeTableName: loadJsonContent('../rules/_parameters.json').routeTableName
       resourceGroupName: loadJsonContent('../rules/_parameters.json').resourceGroupName
       excludedSubnets: loadJsonContent('../rules/_parameters.json').excludedSubnets

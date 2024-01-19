@@ -12,6 +12,14 @@
         ]
     }
   },
+  "location": {
+    "type": "string",
+    "metadata": {
+        "description": "The locations specific to this assignment",
+        "displayName": "Locations",
+        "strongType": "location"
+    }
+  },
   "lock": {
     "type": "string",
     "metadata": {

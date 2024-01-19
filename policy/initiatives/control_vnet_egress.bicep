@@ -7,12 +7,15 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
   name: 'control_vnet_egress'
   properties: {
     metadata: {
-      version: '1.0.0'
-      category: 'algonz'
+      version: config.metadata.version
+      category: config.metadata.category
     }
     displayName: 'Control vnet egress'
     description: 'Stop deployments of subnets without a properly configured route table.'
     parameters: {
+      location: loadJsonContent('../rules/_parameters.json').location
+      resourceGroupName: loadJsonContent('../rules/_parameters.json').resourceGroupName
+      routeTableName: loadJsonContent('../rules/_parameters.json').routeTableName
       nextHopIpAddress: loadJsonContent('../rules/_parameters.json').nextHopIpAddress
       excludedSubnets: loadJsonContent('../rules/_parameters.json').excludedSubnets
     }
@@ -23,11 +26,14 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
           effect: {
             value: 'deny'
           }
-          routeTableName: {
-            value: config.routeTableName
+          location: {
+            value: '[parameters(\'location\')]'
           }
           resourceGroupName: {
-            value: config.resourceGroupName
+            value: '[parameters(\'resourceGroupName\')]'
+          }
+          routeTableName: {
+            value: '[parameters(\'routeTableName\')]'
           }
           excludedSubnets: {
             value: '[parameters(\'excludedSubnets\')]'
@@ -48,16 +54,11 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
           effect: {
             value: 'deny'
           }
+          location: {
+            value: '[parameters(\'location\')]'
+          }
           nextHopIpAddress: {
             value: '[parameters(\'nextHopIpAddress\')]'
-          }
-        }
-      }
-      {
-        policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'udr_has_only_one_route')
-        parameters: {
-          effect: {
-            value: 'deny'
           }
         }
       }
