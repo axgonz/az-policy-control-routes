@@ -18,6 +18,10 @@ module subnet_is_associated_with_desired_udr 'definitions/subnet_is_associated_w
   name: 'subnet_is_associated_with_desired_udr'
   scope: managementGroup
 }
+module vnet_has_subnet_associated_with_desired_udr 'definitions/vnet_has_subnet_associated_with_desired_udr.bicep' = {
+  name: 'vnet_has_subnet_associated_with_desired_udr'
+  scope: managementGroup
+}
 module udr_forces_next_hop 'definitions/udr_forces_next_hop.bicep' = {
   name: 'udr_forces_next_hop'
   scope: managementGroup
@@ -65,6 +69,7 @@ module control_vnet_egress 'initiatives/control_vnet_egress.bicep' = {
   dependsOn: [
     vnet_in_allowed_locations
     subnet_is_associated_with_desired_udr
+    vnet_has_subnet_associated_with_desired_udr
     udr_has_bgp_propagation_disabled
     udr_has_default_route
   ]

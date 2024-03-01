@@ -53,6 +53,26 @@ resource initiative 'Microsoft.Authorization/policySetDefinitions@2023-04-01' = 
         }
       }
       {
+        policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'vnet_has_subnet_associated_with_desired_udr')
+        parameters: {
+          effect: {
+            value: 'deny'
+          }
+          location: {
+            value: '[parameters(\'location\')]'
+          }
+          resourceGroupName: {
+            value: '[parameters(\'resourceGroupName\')]'
+          }
+          routeTableName: {
+            value: '[parameters(\'routeTableName\')]'
+          }
+          excludedSubnets: {
+            value: '[parameters(\'excludedSubnets\')]'
+          }
+        }
+      }
+      {
         policyDefinitionId: extensionResourceId(scope, 'Microsoft.Authorization/policyDefinitions', 'udr_has_bgp_propagation_disabled')
         parameters: {
           effect: {
