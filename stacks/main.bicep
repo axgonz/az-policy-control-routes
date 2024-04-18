@@ -1,17 +1,25 @@
-targetScope = 'managementGroup'
+targetScope = 'subscription'
 
 param location string = deployment().location
 
 var config = loadJsonContent('../config.json')
 var shortLocation = config.regionPrefixLookup[location]
 
-module rg 'modules/rg.bicep' = [for subscriptionId in config.stacks.targetSubscriptions: {
-  name: 'deploy_${config.resourceGroupName}_${shortLocation}'
-  scope: subscription(subscriptionId)
+var resourceGroupName = config.resourceGroupName
+var routeTableName = config.routeTable.name
+var nextHopIpAddress = config.nextHopIpAddressLookup[location]
+
+resource rg 'Microsoft.Resources/resourceGroups@2023-07-01' = {
+  name: '${resourceGroupName}_${shortLocation}'
+  location: location
+}
+
+module routeTable 'modules/udr.bicep' = {
+  name: 'deploy_${routeTableName}_${shortLocation}'
+  scope: rg
   params: {
+    name: routeTableName
     location: location
-    resourceGroupName: '${config.resourceGroupName}_${shortLocation}'
-    routeTableName: '${config.routeTable.name}_${shortLocation}'
-    nextHopIpAddress: config.nextHopIpAddressLookup[location]
+    nextHopIpAddress: nextHopIpAddress
   }
-}]
+}
